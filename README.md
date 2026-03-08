@@ -13,15 +13,17 @@ E-commerce platforms often suffer from delayed deliveries due to poor inventory 
 - Simulation comparing risk-aware vs basic forecasting
 
 ## Project Structure
+
+
 area-aware-demand-forecasting
 │
 ├── src
-│   ├── train_model.py
-│   ├── predict_demand.py
-│   ├── simulation.py
-│   ├── generate_data.py
-│   ├── prepare_real_data.py
-│   └── check_features.py
+│ ├── train_model.py
+│ ├── predict_demand.py
+│ ├── simulation.py
+│ ├── generate_data.py
+│ ├── prepare_real_data.py
+│ └── check_features.py
 │
 ├── .gitignore
 └── README.md
@@ -79,18 +81,14 @@ Uncertainty range: 24 – 61 units (90% CI)
 Decision:
 Keep stock in central warehouse
 
-Decision:
-Keep stock in central warehouse
-
 ## Data Sources
 
 The project uses a retail sales dataset combined with contextual signals:
 
-- Retail sales data (city, product, units sold)
-- Weather indicators (rain, temperature)
-- Festival signals
+Retail sales dataset (city-level demand)
+Weather indicators (rain, temperature features)
+Festival signals (binary event indicators)
 
-Large datasets are excluded from the repository using `.gitignore`.
 
 ## Technologies
 
@@ -98,7 +96,9 @@ Python
 Pandas  
 Scikit-learn  
 Joblib  
-Machine Learning (Random Forest, Gradient Boosting)
+Machine Learning Models:
+- Random Forest
+- Gradient Boosting
 
 ## Notes
 Large datasets and trained models are excluded from the repository using `.gitignore`.
