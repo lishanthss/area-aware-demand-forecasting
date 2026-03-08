@@ -14,20 +14,20 @@ E-commerce platforms often suffer from delayed deliveries due to poor inventory 
 
 ## Project Structure
 
-
+```
 area-aware-demand-forecasting
 │
 ├── src
-│ ├── train_model.py
-│ ├── predict_demand.py
-│ ├── simulation.py
-│ ├── generate_data.py
-│ ├── prepare_real_data.py
-│ └── check_features.py
+│   ├── train_model.py
+│   ├── predict_demand.py
+│   ├── simulation.py
+│   ├── generate_data.py
+│   ├── prepare_real_data.py
+│   └── check_features.py
 │
 ├── .gitignore
 └── README.md
-
+```
 ## How to Run
 
 Train model:
@@ -85,17 +85,18 @@ Keep stock in central warehouse
 
 The project uses a retail sales dataset combined with contextual signals:
 
-Retail sales dataset (city-level demand)
-Weather indicators (rain, temperature features)
-Festival signals (binary event indicators)
+- Retail sales dataset (city-level demand)
+- Weather indicators (rain, temperature features)
+- Festival signals (binary event indicators)
 
 
 ## Technologies
 
-Python  
-Pandas  
-Scikit-learn  
-Joblib  
+- Python
+- Pandas
+- Scikit-learn
+- Joblib
+
 Machine Learning Models:
 - Random Forest
 - Gradient Boosting
