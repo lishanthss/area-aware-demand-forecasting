@@ -1,0 +1,9 @@
+# Ignore trained ML models
+*.pkl
+
+# Ignore datasets
+data/*.csv
+
+# Python cache
+__pycache__/
+*.pyc
