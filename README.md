@@ -36,6 +36,48 @@ python src/predict_demand.py
 
 Run simulation:
 python src/simulation.py
+ ## System Architecture
 
+Data Sources
+   │
+   ├── Retail sales dataset
+   ├── Weather indicators
+   └── Festival signals
+        │
+        ▼
+Feature Engineering
+(city encoding, product encoding, external signals)
+        │
+        ▼
+Demand Forecasting Model
+(Random Forest / Gradient Boosting)
+        │
+        ▼
+Uncertainty Estimation
+(Quantile regression models: q10, q50, q90)
+        │
+        ▼
+Decision Layer
+Inventory placement rule:
+- Pre-stock nearby warehouse
+- Keep stock in central warehouse
+        │
+        ▼
+Simulation
+Compare risk-aware vs basic forecasting
+
+## Results
+
+Baseline demand forecasting stockout rate: 49.46%
+Risk-aware forecasting stockout rate: 9.66%
+
+Stockout reduction: ~39.8%
+Example prediction:
+
+Demand forecast: 41 units
+Uncertainty range: 24 – 61 units (90% CI)
+
+Decision:
+Keep stock in central warehouse
 ## Notes
 Large datasets and trained models are excluded from the repository using `.gitignore`.
