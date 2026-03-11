@@ -1,105 +1,262 @@
-# Area-Aware Demand Forecasting for E-commerce Logistics
+# Area-Aware Demand Forecasting and Inventory Pre-Positioning System
 
-Machine learning system that predicts product demand for different cities using contextual signals such as weather and festivals. The system also estimates uncertainty and suggests inventory placement decisions.
+## Project Overview
 
-## Problem
-E-commerce platforms often suffer from delayed deliveries due to poor inventory placement. This project forecasts demand at an area level and recommends whether to keep stock in a central warehouse or pre-position inventory in a nearby godown.
+This project builds an **AI-driven logistics decision support system** for e-commerce inventory management.
 
-## Features
-- Area-aware demand forecasting
-- External signal features (weather, festival indicators)
-- Uncertainty estimation using quantile regression
-- Inventory decision logic
-- Simulation comparing risk-aware vs basic forecasting
+Instead of forecasting demand for an entire region, the system predicts **city-level product demand** and recommends **inventory transfers between regional warehouses** to reduce stockouts and improve delivery efficiency.
 
-## Project Structure
+The project demonstrates how **machine learning predictions can be integrated with logistics decision-making**.
 
-```
-area-aware-demand-forecasting
+---
+
+# Problem Statement
+
+E-commerce platforms often maintain centralized inventory in warehouses. However, product demand varies significantly across cities due to:
+
+- regional economic activity
+- seasonal weather
+- festivals and holidays
+- consumer purchasing patterns
+
+Improper inventory distribution leads to:
+
+• Stockouts in high-demand regions  
+• Excess inventory in low-demand regions  
+• Increased delivery delays  
+
+This project proposes a system that:
+
+1. Predicts **city-level product demand**
+2. Aggregates demand at the **regional level**
+3. Recommends **inventory transfers between warehouses**
+4. Evaluates **stockout risk reduction**
+
+---
+
+# System Workflow
+
+
+Dataset Preparation
+↓
+Feature Engineering
+↓
+Model Training & Comparison
+↓
+City-Level Demand Prediction
+↓
+Regional Demand Aggregation
+↓
+Inventory Transfer Recommendation
+↓
+Stockout Risk Simulation
+↓
+FastAPI Decision Service
+
+
+---
+
+# Dataset Preparation
+
+The system uses a retail demand dataset and converts it into a **logistics forecasting dataset**.
+
+### Original dataset fields
+
+- date
+- store
+- item
+- sales
+
+### Processed dataset features
+
+- city
+- product
+- units_sold
+- month
+- day_of_week
+- temperature
+- rain
+- is_festival
+
+Additional contextual signals simulate real-world demand drivers such as:
+
+• seasonal weather conditions  
+• festival demand spikes  
+• regional economic patterns  
+
+---
+
+# Machine Learning Models
+
+The project compares multiple regression models to select the best demand predictor.
+
+| Model | Purpose |
+|------|------|
+| Linear Regression | baseline model |
+| Random Forest | captures non-linear demand patterns |
+| Gradient Boosting | improves prediction accuracy |
+
+### Evaluation Metric
+
+Mean Absolute Error (MAE)
+
+The best-performing model is automatically selected after training.
+
+---
+
+# Uncertainty Estimation
+
+To account for demand variability, the system also trains **quantile regression models**.
+
+Models trained:
+
+- 10th percentile model
+- 50th percentile model
+- 90th percentile model
+
+Example prediction:
+
+
+Predicted Demand: 80 units
+Uncertainty Range: 60 – 110 units
+
+
+This helps planners prepare for demand fluctuations.
+
+---
+
+# Regional Inventory Optimization
+
+Cities are grouped into regions:
+
+### Salem Region
+- Salem
+- Namakkal
+
+### Chennai Region
+- Chennai
+- Trichy
+
+The system:
+
+1. predicts demand for each city
+2. aggregates regional demand
+3. detects shortage and surplus
+4. recommends a **safe inventory transfer**
+
+Example:
+
+
+City Demand Forecast
+
+Chennai : 28 units
+Salem : 72 units
+Namakkal : 56 units
+Trichy : 35 units
+
+Regional Demand
+
+Salem Region : 128 units
+Chennai Region : 64 units
+
+Recommended Action
+
+Move 25 units from Chennai warehouse to Salem warehouse
+
+
+---
+
+# Stockout Risk Simulation
+
+To evaluate the inventory decision, the system simulates two scenarios.
+
+### Scenario 1 — Without system
+
+No inventory redistribution.
+
+### Scenario 2 — With ML-based redistribution
+
+Inventory is transferred between warehouses.
+
+Example result:
+
+
+Stockouts without system : 1
+Stockouts with system : 0
+
+
+This demonstrates how **inventory repositioning can reduce stockout risk**.
+
+---
+
+# API Deployment
+
+The project exposes a **FastAPI service** to generate predictions and inventory decisions.
+
+### Endpoint
+
+
+/decision
+
+
+### Example Request
+
+
+/decision?product=Fan&temperature=32&rain=0&festival=1
+
+
+### Example Response
+
+```json
+{
+  "city_predictions": {
+    "Chennai": 28.52,
+    "Salem": 72,
+    "Namakkal": 56.81,
+    "Trichy": 35.59
+  },
+  "regional_demand": {
+    "Salem_region": 128.81,
+    "Chennai_region": 64.11
+  },
+  "recommended_transfer": {
+    "from": "Chennai_region",
+    "to": "Salem_region",
+    "units": 25
+  },
+  "stockout_analysis": {
+    "without_system": 1,
+    "with_system": 1
+  }
+}
+Technologies Used
+
+Python
+
+Scikit-learn
+
+FastAPI
+
+Pandas
+
+NumPy
+
+Matplotlib
+
+Project Structure
+AreaAwareDemandForecasting
+│
+├── data
+│   └── real_sales.csv
 │
 ├── src
-│   ├── train_model.py
-│   ├── predict_demand.py
-│   ├── simulation.py
-│   ├── generate_data.py
+│   ├── api.py
 │   ├── prepare_real_data.py
-│   └── check_features.py
+│   ├── train_model.py
+│   ├── regional_inventory_optimizer.py
+│   ├── advanced_stockout_simulation.py
+│   ├── stockout_simulation.py
+│   └── visualize_demand.py
 │
-├── .gitignore
-└── README.md
-```
-## How to Run
-
-Train model:
-python src/train_model.py
-
-Run prediction:
-python src/predict_demand.py
-
-Run simulation:
-python src/simulation.py
-## System Architecture
-
-1. Data Sources
-   - Retail sales dataset
-   - Weather indicators
-   - Festival signals
-
-2. Feature Engineering
-   - City encoding
-   - Product encoding
-   - External signal features
-
-3. Demand Forecasting Model
-   - Random Forest / Gradient Boosting
-
-4. Uncertainty Estimation
-   - Quantile regression models
-   - q10, q50, q90 prediction intervals
-
-5. Decision Layer
-   Inventory placement rule:
-   - Pre-stock inventory in nearby warehouse
-   - Keep stock in central warehouse
-
-6. Simulation
-   - Compare basic forecasting vs risk-aware forecasting
-
-## Results
-
-Baseline forecasting stockout rate: **49.46%**
-
-Risk-aware forecasting stockout rate: **9.66%**
-
-Stockout reduction: **~39.8%**
-
-### Example Prediction
-
-Demand forecast: 41 units  
-Uncertainty range: 24 – 61 units (90% CI)
-
-Decision:
-Keep stock in central warehouse
-
-## Data Sources
-
-The project uses a retail sales dataset combined with contextual signals:
-
-- Retail sales dataset (city-level demand)
-- Weather indicators (rain, temperature features)
-- Festival signals (binary event indicators)
-
-
-## Technologies
-
-- Python
-- Pandas
-- Scikit-learn
-- Joblib
-
-Machine Learning Models:
-- Random Forest
-- Gradient Boosting
-
-## Notes
-Large datasets and trained models are excluded from the repository using `.gitignore`.
+├── README.md
+└── requirements.txt
