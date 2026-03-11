@@ -21,9 +21,9 @@ E-commerce platforms often maintain centralized inventory in warehouses. However
 
 Improper inventory distribution leads to:
 
-• Stockouts in high-demand regions  
-• Excess inventory in low-demand regions  
-• Increased delivery delays  
+- Stockouts in high-demand regions
+- Excess inventory in low-demand regions
+- Increased delivery delays
 
 This project proposes a system that:
 
@@ -36,23 +36,23 @@ This project proposes a system that:
 
 # System Workflow
 
-
+```
 Dataset Preparation
-↓
+        ↓
 Feature Engineering
-↓
+        ↓
 Model Training & Comparison
-↓
+        ↓
 City-Level Demand Prediction
-↓
+        ↓
 Regional Demand Aggregation
-↓
+        ↓
 Inventory Transfer Recommendation
-↓
+        ↓
 Stockout Risk Simulation
-↓
+        ↓
 FastAPI Decision Service
-
+```
 
 ---
 
@@ -80,9 +80,9 @@ The system uses a retail demand dataset and converts it into a **logistics forec
 
 Additional contextual signals simulate real-world demand drivers such as:
 
-• seasonal weather conditions  
-• festival demand spikes  
-• regional economic patterns  
+- seasonal weather conditions
+- festival demand spikes
+- regional economic patterns
 
 ---
 
@@ -92,9 +92,9 @@ The project compares multiple regression models to select the best demand predic
 
 | Model | Purpose |
 |------|------|
-| Linear Regression | baseline model |
-| Random Forest | captures non-linear demand patterns |
-| Gradient Boosting | improves prediction accuracy |
+| Linear Regression | Baseline model |
+| Random Forest | Captures non-linear demand patterns |
+| Gradient Boosting | Improves prediction accuracy |
 
 ### Evaluation Metric
 
@@ -116,10 +116,10 @@ Models trained:
 
 Example prediction:
 
-
+```
 Predicted Demand: 80 units
 Uncertainty Range: 60 – 110 units
-
+```
 
 This helps planners prepare for demand fluctuations.
 
@@ -127,7 +127,7 @@ This helps planners prepare for demand fluctuations.
 
 # Regional Inventory Optimization
 
-Cities are grouped into regions:
+Cities are grouped into regions.
 
 ### Salem Region
 - Salem
@@ -146,23 +146,23 @@ The system:
 
 Example:
 
-
+```
 City Demand Forecast
 
-Chennai : 28 units
-Salem : 72 units
-Namakkal : 56 units
-Trichy : 35 units
+Chennai   : 28 units
+Salem     : 72 units
+Namakkal  : 56 units
+Trichy    : 35 units
 
 Regional Demand
 
-Salem Region : 128 units
+Salem Region   : 128 units
 Chennai Region : 64 units
 
 Recommended Action
 
 Move 25 units from Chennai warehouse to Salem warehouse
-
+```
 
 ---
 
@@ -171,19 +171,17 @@ Move 25 units from Chennai warehouse to Salem warehouse
 To evaluate the inventory decision, the system simulates two scenarios.
 
 ### Scenario 1 — Without system
-
 No inventory redistribution.
 
 ### Scenario 2 — With ML-based redistribution
-
 Inventory is transferred between warehouses.
 
 Example result:
 
-
+```
 Stockouts without system : 1
-Stockouts with system : 0
-
+Stockouts with system    : 0
+```
 
 This demonstrates how **inventory repositioning can reduce stockout risk**.
 
@@ -195,15 +193,15 @@ The project exposes a **FastAPI service** to generate predictions and inventory 
 
 ### Endpoint
 
-
+```
 /decision
-
+```
 
 ### Example Request
 
-
+```
 /decision?product=Fan&temperature=32&rain=0&festival=1
-
+```
 
 ### Example Response
 
@@ -229,21 +227,24 @@ The project exposes a **FastAPI service** to generate predictions and inventory 
     "with_system": 1
   }
 }
-Technologies Used
+```
 
-Python
+---
 
-Scikit-learn
+# Technologies Used
 
-FastAPI
+- Python
+- Scikit-learn
+- FastAPI
+- Pandas
+- NumPy
+- Matplotlib
 
-Pandas
+---
 
-NumPy
+# Project Structure
 
-Matplotlib
-
-Project Structure
+```
 AreaAwareDemandForecasting
 │
 ├── data
@@ -260,3 +261,69 @@ AreaAwareDemandForecasting
 │
 ├── README.md
 └── requirements.txt
+```
+
+---
+
+# Running the Project
+
+### Clone repository
+
+```
+git clone https://github.com/lishanthss/area-aware-demand-forecasting.git
+```
+
+### Navigate to the project directory
+
+```
+cd area-aware-demand-forecasting
+```
+
+### Install dependencies
+
+```
+pip install -r requirements.txt
+```
+
+### Train the model
+
+```
+python src/train_model.py
+```
+
+### Start API server
+
+```
+python -m uvicorn src.api:app --reload
+```
+
+### Open API documentation
+
+```
+http://127.0.0.1:8000/docs
+```
+
+---
+
+# Future Improvements
+
+Possible extensions include:
+
+- integration with real weather APIs
+- transportation cost optimization
+- multi-product inventory allocation
+- warehouse capacity constraints
+- advanced time-series forecasting models
+
+---
+
+# Key Takeaways
+
+This project demonstrates how machine learning can support logistics operations by combining:
+
+- demand forecasting
+- regional demand analysis
+- inventory repositioning
+- stockout risk evaluation
+
+The system acts as a **prototype AI-driven logistics planning tool for e-commerce platforms**.
