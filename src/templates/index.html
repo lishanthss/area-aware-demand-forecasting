@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logistics AI Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen font-sans">
+    <nav class="bg-indigo-700 p-4 text-white shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold tracking-tight">SOL-SENTRY LOGISTICS</h1>
+            <span class="text-indigo-200 text-sm">AI-Driven Inventory Optimizer</span>
+        </div>
+    </nav>
+
+    <main class="container mx-auto py-8 px-4">
+        <div class="bg-white rounded-xl shadow-sm p-6 mb-8 border border-gray-200">
+            <h2 class="text-gray-700 font-bold mb-4 uppercase text-xs tracking-widest">Inventory Forecast Parameters</h2>
+            <form action="/decision" method="get" class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                <input name="product" placeholder="Product Name" class="bg-gray-50 border border-gray-300 text-sm rounded-lg p-2.5 focus:ring-indigo-500 focus:border-indigo-500" required>
+                <input name="temperature" type="number" placeholder="Temp (°C)" class="bg-gray-50 border border-gray-300 text-sm rounded-lg p-2.5" required>
+                <input name="rain" type="number" placeholder="Rain (0/1)" class="bg-gray-50 border border-gray-300 text-sm rounded-lg p-2.5" required>
+                <input name="festival" type="number" placeholder="Festival (0/1)" class="bg-gray-50 border border-gray-300 text-sm rounded-lg p-2.5" required>
+                <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg px-5 py-2.5 transition duration-200">Run Analysis</button>
+            </form>
+        </div>
+
+        {% if result %}
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                <h3 class="text-gray-500 text-sm font-semibold mb-4 uppercase">City-Level Demand</h3>
+                <div class="space-y-4">
+                    {% for city, pred in result.city_predictions.items() %}
+                    <div class="flex justify-between items-center border-b border-gray-50 pb-2">
+                        <span class="text-gray-700">{{ city }}</span>
+                        <span class="font-mono font-bold text-indigo-600">{{ pred }} units</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 lg:col-span-2">
+                <h3 class="text-gray-500 text-sm font-semibold mb-4 uppercase">Inventory Strategy</h3>
+                <div class="flex flex-col md:flex-row items-center justify-around bg-indigo-50 p-6 rounded-lg border border-indigo-100">
+                    <div class="text-center">
+                        <p class="text-xs text-indigo-400 uppercase">From</p>
+                        <p class="text-lg font-bold text-indigo-900">{{ result.recommended_transfer.from }}</p>
+                    </div>
+                    <div class="py-4 md:py-0">
+                        <div class="flex flex-col items-center">
+                            <span class="bg-indigo-600 text-white px-4 py-1 rounded-full text-sm font-bold shadow-sm">
+                                Transfer {{ result.recommended_transfer.units }} units
+                            </span>
+                            <span class="text-indigo-300 text-2xl mt-1">➔</span>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-xs text-indigo-400 uppercase">To</p>
+                        <p class="text-lg font-bold text-indigo-900">{{ result.recommended_transfer.to }}</p>
+                    </div>
+                </div>
+                
+                <div class="mt-6 grid grid-cols-2 gap-4">
+                    <div class="text-center p-3 rounded-lg border border-red-100 bg-red-50">
+                        <p class="text-xs text-red-400 uppercase">Stockouts Without AI</p>
+                        <p class="text-2xl font-black text-red-600">{{ result.stockout_analysis.without_system }}</p>
+                    </div>
+                    <div class="text-center p-3 rounded-lg border border-green-100 bg-green-50">
+                        <p class="text-xs text-green-400 uppercase">Stockouts With AI</p>
+                        <p class="text-2xl font-black text-green-600">{{ result.stockout_analysis.with_system }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </main>
+</body>
+</html>
