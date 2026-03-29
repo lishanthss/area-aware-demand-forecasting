@@ -207,19 +207,19 @@ To evaluate the decision system, two scenarios are simulated.
 
 ### Scenario 1 — Without AI
 
-Inventory remains fixed.
+Inventory remains fixed at initial arbitrary levels.
 
 
 ### Scenario 2 — With AI
 
-Inventory is redistributed between warehouses.
+Initial warehouse inventory is randomized to introduce supply volatility, and the system dynamically computes and executes optimal stock transfers between regions to prevent shortages.
 
 
-Example result:
+Example result (over 1000 simulated volatile supply runs):
 
-```
-Stockouts without system : 1
-Stockouts with system    : 0
+```text
+Stockouts without system : 807
+Stockouts with system    : 373
 ```
 
 
@@ -258,10 +258,6 @@ The project exposes a **FastAPI decision service** for real-time predictions.
     "Namakkal": 56.81,
     "Trichy": 35.59
   },
-  "regional_demand": {
-    "Salem_region": 128.81,
-    "Chennai_region": 64.11
-  },
   "recommended_transfer": {
     "from": "Chennai_region",
     "to": "Salem_region",
@@ -269,7 +265,7 @@ The project exposes a **FastAPI decision service** for real-time predictions.
   },
   "stockout_analysis": {
     "without_system": 1,
-    "with_system": 1
+    "with_system": 0
   }
 }
 ```
@@ -323,6 +319,7 @@ AreaAwareDemandForecasting
 │   ├── prepare_real_data.py
 │   ├── train_model.py
 │   ├── regional_inventory_optimizer.py
+│   ├── city_inventory_optimizer.py
 │   ├── advanced_stockout_simulation.py
 │   ├── stockout_simulation.py
 │   └── visualize_demand.py
@@ -340,7 +337,7 @@ AreaAwareDemandForecasting
 Clone the repository
 
 ```bash
-git clone https://github.com/lishanthss/area-aware-demand-forecasting.git
+git clone https://github.com/lishanthss/area-aware-demand-forecasting-and-inventory-prepositioning.git
 ```
 
 
