@@ -12,26 +12,34 @@ df = pd.DataFrame(list(city_demand.items()), columns=["city", "predicted_demand"
 
 avg_demand = df["predicted_demand"].mean()
 
-surplus_cities = df[df["predicted_demand"] < avg_demand]
-shortage_cities = df[df["predicted_demand"] > avg_demand]
+df["surplus"] = avg_demand - df["predicted_demand"]
+
+surplus_cities = df[df["surplus"] > 0].to_dict('records')
+shortage_cities = df[df["surplus"] < 0].to_dict('records')
 
 print("Average demand:", round(avg_demand))
 print()
 
 print("Surplus cities:")
-print(surplus_cities)
+for c in surplus_cities:
+    print(f"- {c['city']}: {round(c['surplus'])} units surplus")
 print()
 
 print("High demand cities:")
-print(shortage_cities)
+for c in shortage_cities:
+    print(f"- {c['city']}: {round(abs(c['surplus']))} units needed")
 print()
 
-for _, low in surplus_cities.iterrows():
-    for _, high in shortage_cities.iterrows():
-
-        transfer_units = int((high["predicted_demand"] - avg_demand) / 2)
-
+for low in surplus_cities:
+    for high in shortage_cities:
+        if low["surplus"] <= 0:
+            break
+        if high["surplus"] >= 0:
+            continue
+            
+        transfer_units = int(min(low["surplus"], abs(high["surplus"])))
+        
         if transfer_units > 0:
-            print(
-                f"Move {transfer_units} units from {low['city']} warehouse to {high['city']} warehouse"
-            )
+            print(f"Move {transfer_units} units from {low['city']} warehouse to {high['city']} warehouse")
+            low["surplus"] -= transfer_units
+            high["surplus"] += transfer_units

@@ -148,6 +148,10 @@ def adjust_demand(row):
     if row["is_festival"] == 1:
         demand = demand * 1.4
 
+    import random
+    noise_factor = random.uniform(0.85, 1.15)
+    demand = int(demand * noise_factor)
+
     return demand
 
 

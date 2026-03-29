@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Logistics AI Dashboard</title>
+    <title>Area-Aware Demand Forecasting</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 min-h-screen font-sans">
     <nav class="bg-indigo-700 p-4 text-white shadow-md">
         <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-xl font-bold tracking-tight">SOL-SENTRY LOGISTICS</h1>
-            <span class="text-indigo-200 text-sm">AI-Driven Inventory Optimizer</span>
+            <h1 class="text-xl font-bold tracking-tight uppercase">Area-Aware Inventory Optimizer</h1>
+            <span class="text-indigo-200 text-sm italic">AI Decision Support System</span>
         </div>
     </nav>
 
@@ -18,10 +18,10 @@
         <div class="bg-white rounded-xl shadow-sm p-6 mb-8 border border-gray-200">
             <h2 class="text-gray-700 font-bold mb-4 uppercase text-xs tracking-widest">Inventory Forecast Parameters</h2>
             <form action="/decision" method="get" class="grid grid-cols-1 md:grid-cols-5 gap-4">
-                <input name="product" placeholder="Product Name" class="bg-gray-50 border border-gray-300 text-sm rounded-lg p-2.5 focus:ring-indigo-500 focus:border-indigo-500" required>
-                <input name="temperature" type="number" placeholder="Temp (°C)" class="bg-gray-50 border border-gray-300 text-sm rounded-lg p-2.5" required>
-                <input name="rain" type="number" placeholder="Rain (0/1)" class="bg-gray-50 border border-gray-300 text-sm rounded-lg p-2.5" required>
-                <input name="festival" type="number" placeholder="Festival (0/1)" class="bg-gray-50 border border-gray-300 text-sm rounded-lg p-2.5" required>
+                <input name="product" value="{{ product }}" placeholder="Product Name" class="bg-gray-50 border border-gray-300 text-sm rounded-lg p-2.5 focus:ring-indigo-500 focus:border-indigo-500" required>
+                <input name="temperature" value="{{ temp }}" type="number" placeholder="Temp (°C)" class="bg-gray-50 border border-gray-300 text-sm rounded-lg p-2.5" required>
+                <input name="rain" value="{{ rain }}" type="number" placeholder="Rain (0/1)" class="bg-gray-50 border border-gray-300 text-sm rounded-lg p-2.5" required>
+                <input name="festival" value="{{ fest }}" type="number" placeholder="Festival (0/1)" class="bg-gray-50 border border-gray-300 text-sm rounded-lg p-2.5" required>
                 <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg px-5 py-2.5 transition duration-200">Run Analysis</button>
             </form>
         </div>

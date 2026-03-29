@@ -6,10 +6,12 @@ regional_demand = {
     "Chennai_region": 45.52
 }
 
+import random
+
 # Assume current stock levels
 warehouse_stock = {
-    "Salem_region": 90,
-    "Chennai_region": 90
+    "Salem_region": random.randint(50, 150),
+    "Chennai_region": random.randint(50, 150)
 }
 
 print("\nCURRENT STOCK LEVELS")
@@ -35,10 +37,20 @@ for region in regional_demand:
 # Scenario 2: With your system
 # -----------------------------
 
-transfer = 41
+salem_diff = regional_demand["Salem_region"] - warehouse_stock["Salem_region"]
+chennai_diff = regional_demand["Chennai_region"] - warehouse_stock["Chennai_region"]
 
-warehouse_stock["Salem_region"] += transfer
-warehouse_stock["Chennai_region"] -= transfer
+transfer = 0
+if salem_diff > 0 and chennai_diff < 0:
+    transfer = min(salem_diff, abs(chennai_diff))
+    warehouse_stock["Salem_region"] += transfer
+    warehouse_stock["Chennai_region"] -= transfer
+elif chennai_diff > 0 and salem_diff < 0:
+    transfer = min(chennai_diff, abs(salem_diff))
+    warehouse_stock["Chennai_region"] += transfer
+    warehouse_stock["Salem_region"] -= transfer
+
+print("Units transferred dynamically:", round(transfer))
 
 stockout_with_system = 0
 

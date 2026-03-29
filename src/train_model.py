@@ -26,14 +26,17 @@ print("Loading dataset...")
 df = pd.read_csv(DATA_PATH)
 
 # ---------------------------------------------
-# 3. Encode categorical variables
+# 3. Prepare Time-Series Data
+# ---------------------------------------------
+
+df["date"] = pd.to_datetime(df["date"])
+df = df.sort_values("date")
+
+# ---------------------------------------------
+# 4. Encode categorical variables & Create features
 # ---------------------------------------------
 
 df = pd.get_dummies(df, columns=["city", "product"], drop_first=True)
-
-# ---------------------------------------------
-# 4. Create features and target
-# ---------------------------------------------
 
 X = df.drop(columns=["date", "units_sold"])
 y = df["units_sold"]
@@ -43,14 +46,14 @@ joblib.dump(X.columns.tolist(), FEATURES_PATH)
 print("Feature schema saved.")
 
 # ---------------------------------------------
-# 5. Train-test split
+# 5. Train-test split (Chronological)
 # ---------------------------------------------
 
 X_train, X_test, y_train, y_test = train_test_split(
     X,
     y,
     test_size=0.2,
-    random_state=42
+    shuffle=False
 )
 
 # ---------------------------------------------
@@ -78,14 +81,17 @@ for name, model in models.items():
 
     model.fit(X_train, y_train)
 
-    preds = model.predict(X_test)
+    train_preds = model.predict(X_train)
+    test_preds = model.predict(X_test)
 
-    mae = mean_absolute_error(y_test, preds)
+    train_mae = mean_absolute_error(y_train, train_preds)
+    test_mae = mean_absolute_error(y_test, test_preds)
 
-    results[name] = mae
+    results[name] = test_mae
     trained_models[name] = model
 
-    print(f"{name} MAE:", round(mae, 2))
+    print(f"{name} Train MAE: {round(train_mae, 2)}")
+    print(f"{name} Test MAE:  {round(test_mae, 2)}")
 
 # ---------------------------------------------
 # 8. Select best model
